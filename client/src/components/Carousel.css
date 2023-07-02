@@ -1,0 +1,46 @@
+.carousel-container {
+    width: 100vw; /* set width to 100vw for full viewport width */
+    max-width: 100%; /* set max-width to 100% to stop at navbar width */
+    height: calc(100vh - 60px); /* set height to viewport height minus navbar height */
+    margin: 0 auto; /* center the carousel horizontally */
+    overflow: hidden; /* hide any overflowing content within the carousel */
+    position: relative; /* set position to relative for absolute positioning of carousel buttons */
+}
+
+.carousel-image {
+    height: 100%;
+    width: 100%;
+    background-size: cover; /* use cover to fill the entire container while maintaining aspect ratio */
+    background-position: center;
+}
+
+.carousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 16px;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.carousel-button:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: rgb(7, 7, 7);
+}
+
+.carousel-button-previous {
+    left: 0;
+}
+
+.carousel-button-next {
+    right: 0;
+}
+
+.carousel-text {
+    color: black;
+}
