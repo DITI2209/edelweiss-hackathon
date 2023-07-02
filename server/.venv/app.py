@@ -5,11 +5,14 @@ import struct
 import socket
 import datetime
 import threading
+from helpers import response_parser,dataframe
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
 CORS(app)
 socketio = SocketIO(app,cors_allowed_origins='*')
+
+old_data={}
 
 @app.route('/')
 def index():
@@ -20,15 +23,12 @@ def hello():
     data = "hello world"
     return jsonify({'sign': data})
 
-@socketio.on("chat")
-def handle_chat():
-    print("client has connected")
-    emit("connect",{"data":f"id: is connected"})
-
 
 @socketio.on('connect')
 def handle_connect():
     print('new connection')
+    #print(old_data)
+    #emit('old_data',old_data)
 
 @socketio.on('to-server')
 def handle_to_server(arg):
@@ -37,6 +37,43 @@ def handle_to_server(arg):
   
 
 def receive_data(host, port):
+    global old_data
+
+    data_dict = {
+    "packet_length_list": [],
+    "trading_symbol_list": [],
+    "sequence_number_list": [],
+    "timestamp_list": [],
+    "ltp_list": [],
+    "ltq_list": [],
+    "volume_list": [],
+    "bid_price_list": [],
+    "bid_quantity_list": [],
+    "ask_price_list": [],
+    "ask_quantity_list": [],
+    "open_interest_list": [],
+    "previous_close_price_list": [],
+    "prev_open_interest_list": []
+    }
+
+    last_time=0
+    flag=False
+    first_data={"packet_length_list": [],
+                        "trading_symbol_list": [],
+                        "sequence_number_list": [],
+                        "timestamp_list": [],
+                        "ltp_list": [],
+                        "ltq_list": [],
+                        "volume_list": [],
+                        "bid_price_list": [],
+                        "bid_quantity_list": [],
+                        "ask_price_list": [],
+                        "ask_quantity_list": [],
+                        "open_interest_list": [],
+                        "previous_close_price_list": [],
+                        "prev_open_interest_list": []}
+   
+
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     try:
@@ -48,7 +85,9 @@ def receive_data(host, port):
 
         # Receive the response from the server
         buffer = b""  # Initialize an empty buffer to accumulate data
+        
         while True:
+            
             data = client_socket.recv(1024)  # Receive data from the socket
 
             if not data:
@@ -61,10 +100,40 @@ def receive_data(host, port):
                 packet = buffer[:130]  # Extract a complete packet
                 buffer = buffer[130:]  # Remove the processed packet from the buffer
 
-                parsed_data = parse_response(packet)  # Parse and process the packet
-
+                data_dict,last_time,flag,first_data = response_parser.parse_response(response=packet,last_time=last_time,data_dict=data_dict,flag=flag) 
+                 # Parse and process the packet
+              
                 # Emit the parsed data to all connected clients
-                socketio.emit('data', parsed_data)
+                #print(data_dict)
+                if(flag):
+                    print('in here')
+                   
+                    new_data=dataframe.convert_data(data_dict)
+                    #old_data=new_data
+                   
+                    socketio.emit('data', new_data)
+                    new_data=None
+                    print(first_data)
+                    
+                    data_dict={
+                        "packet_length_list": [first_data['packet_length']],
+                        "trading_symbol_list": [first_data["trading_symbol"]],
+                        "sequence_number_list": [first_data["sequence_number"]],
+                        "timestamp_list": [first_data["timestamp"]],
+                        "ltp_list": [first_data["ltp"]],
+                        "ltq_list": [first_data["last_traded_quantity"]],
+                        "volume_list": [first_data["volume"]],
+                        "bid_price_list": [first_data["bid_price"]],
+                        "bid_quantity_list": [first_data["bid_quantity"]],
+                        "ask_price_list": [first_data["ask_price"]],
+                        "ask_quantity_list": [first_data["ask_quantity"]],
+                        "open_interest_list": [first_data["open_interest"]],
+                        "previous_close_price_list": [first_data["prev_close_price"]],
+                        "prev_open_interest_list": [first_data["prev_open_interest"]]
+                    }
+                    flag=False
+
+                
 
     except ConnectionRefusedError:
         print("Connection refused. Make sure the Java JAR file is running and listening on the specified port.")
@@ -74,55 +143,11 @@ def receive_data(host, port):
         # Close the client socket
         client_socket.close()
 
-def parse_response(response):
-    if len(response) < 130:  # Check if the response is complete
-        print("Incomplete packet received")
-        return
-    
-    packet_length = struct.unpack('i', response[:4])[0]
-    trading_symbol = response[4:34].decode('utf-8', errors='replace').rstrip('\x00')
-    sequence_number = struct.unpack('q', response[34:42])[0]
-    timestamp = struct.unpack('q', response[42:50])[0]
-    ltp = struct.unpack('q', response[50:58])[0]
-    last_traded_quantity = struct.unpack('q', response[58:66])[0]
-    volume = struct.unpack('q', response[66:74])[0]
-    bid_price = struct.unpack('q', response[74:82])[0] 
-    bid_quantity = struct.unpack('q', response[82:90])[0]
-    ask_price = struct.unpack('q', response[90:98])[0] 
-    ask_quantity = struct.unpack('q', response[98:106])[0]
-    open_interest = struct.unpack('q', response[106:114])[0]
-    prev_close_price = struct.unpack('q', response[114:122])[0] 
-
-    # Check if the response has sufficient length for prev_open_interest
-    if len(response) >= 130:
-        prev_open_interest = struct.unpack('q', response[122:130])[0]
-    else:
-        prev_open_interest = -1
-    timestamp = datetime.datetime.fromtimestamp(timestamp / 1000).strftime('%a %b %d %H:%M:%S %Z %Y')
-
-    data = {
-        "packet_length": packet_length,
-        "trading_symbol": trading_symbol,
-        "sequence_number": sequence_number,
-        "timestamp": timestamp,
-        "ltp": ltp,
-        "last_traded_quantity": last_traded_quantity,
-        "volume": volume,
-        "bid_price": bid_price,
-        "bid_quantity": bid_quantity,
-        "ask_price": ask_price,
-        "ask_quantity": ask_quantity,
-        "open_interest": open_interest,
-        "prev_close_price": prev_close_price,
-        "prev_open_interest": prev_open_interest
-    }
-
-    return data
 
 if __name__ == '__main__':
     print('hi')
-    host = 'localhost'  # Use 'localhost' or '127.0.0.1' to connect to the local machine
-    port = 4000  # Use the same port as the Java JAR file
+    host = 'localhost' 
+    port = 4000
 
     # Start the data receiving thread
     threading.Thread(target=receive_data, args=(host, port)).start()

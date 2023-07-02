@@ -4,26 +4,40 @@ import { io } from 'socket.io-client';
 let socket;
 
 const Options=()=>{
+    const [dataList,setDataList]=useState([]);
+    console.log(dataList)
+    let data_list=[]
     
 
     useEffect(()=> {
         socket = io('http://127.0.0.1:5000');
 
-        socket.on("connect", () => {
-            console.log(socket.connected); // true
-          });
+        
 
-        socket.on("chat", (chat) => {
+        socket.on("connect", (data) => {
+            console.log('Connected to socket'); // true
            
-            console.log(chat)
-        });
+          });
+        
+        /*   socket.on('old_data',(old_data)=>{
+            console.log(old_data);
+          })  */
+
 
         socket.on('from-server', (msg) => {
             console.log(msg);
           });
 
         socket.on('data',(data)=>{
-            console.log(data);
+
+
+            
+            
+            const arrayOfObjects = JSON.parse(data);
+            console.log(arrayOfObjects.length)
+            console.log([arrayOfObjects[0],arrayOfObjects[1],arrayOfObjects[2],arrayOfObjects[3]])
+        
+            
         });
         
           
