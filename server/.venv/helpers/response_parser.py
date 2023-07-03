@@ -13,15 +13,16 @@ def parse_response(response,last_time,data_dict,flag):
     trading_symbol = response[4:34].decode('utf-8', errors='replace').rstrip('\x00')
     sequence_number = struct.unpack('q', response[34:42])[0]
     timestamp = struct.unpack('q', response[42:50])[0]
-    ltp = struct.unpack('q', response[50:58])[0]
+    ltp = struct.unpack('q', response[50:58])[0]/100
     last_traded_quantity = struct.unpack('q', response[58:66])[0]
     volume = struct.unpack('q', response[66:74])[0]
-    bid_price = struct.unpack('q', response[74:82])[0] 
+    bid_price = struct.unpack('q', response[74:82])[0]/100
     bid_quantity = struct.unpack('q', response[82:90])[0]
-    ask_price = struct.unpack('q', response[90:98])[0] 
+    ask_price = struct.unpack('q', response[90:98])[0]/100
     ask_quantity = struct.unpack('q', response[98:106])[0]
     open_interest = struct.unpack('q', response[106:114])[0]
-    prev_close_price = struct.unpack('q', response[114:122])[0] 
+    prev_close_price = struct.unpack('q', response[114:122])[0]/100
+
 
     # Check if the response has sufficient length for prev_open_interest
     if len(response) >= 130:

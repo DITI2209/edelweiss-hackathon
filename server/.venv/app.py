@@ -5,7 +5,8 @@ import struct
 import socket
 import datetime
 import threading
-from helpers import response_parser,dataframe
+from helpers import response_parser,dataframe,IV,change
+import copy
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
@@ -28,7 +29,7 @@ def hello():
 def handle_connect():
     print('new connection')
     #print(old_data)
-    #emit('old_data',old_data)
+    emit('first_data',old_data)
 
 @socketio.on('to-server')
 def handle_to_server(arg):
@@ -77,43 +78,42 @@ def receive_data(host, port):
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
     try:
-        # Connect to the server socket
+       
         client_socket.connect((host, port))
         print(f"Connected to {host}:{port}")
 
         client_socket.sendto(bytes("a", encoding="utf-8"), (host, port))
 
-        # Receive the response from the server
-        buffer = b""  # Initialize an empty buffer to accumulate data
+       
+        buffer = b"" 
         
         while True:
             
-            data = client_socket.recv(1024)  # Receive data from the socket
+            data = client_socket.recv(1024)  
 
             if not data:
-                break  # No more data, break the loop
+                break 
 
-            buffer += data  # Accumulate the received data
+            buffer += data 
 
-            # Process complete packets in the buffer
-            while len(buffer) >= 130:  # Check if enough data for a complete packet
-                packet = buffer[:130]  # Extract a complete packet
-                buffer = buffer[130:]  # Remove the processed packet from the buffer
+           
+            while len(buffer) >= 130:  
+                packet = buffer[:130] 
+                buffer = buffer[130:]  
 
                 data_dict,last_time,flag,first_data = response_parser.parse_response(response=packet,last_time=last_time,data_dict=data_dict,flag=flag) 
-                 # Parse and process the packet
-              
-                # Emit the parsed data to all connected clients
-                #print(data_dict)
+                
                 if(flag):
                     print('in here')
                    
                     new_data=dataframe.convert_data(data_dict)
-                    #old_data=new_data
+                    new_data=change.get_change_and_oi(new_data)
+                    new_data=IV.IV_list(new_data)
+                    old_data=copy.deepcopy(new_data)
                    
                     socketio.emit('data', new_data)
                     new_data=None
-                    print(first_data)
+                   
                     
                     data_dict={
                         "packet_length_list": [first_data['packet_length']],
@@ -140,7 +140,6 @@ def receive_data(host, port):
     except KeyboardInterrupt:
         print("Client stopped.")
     finally:
-        # Close the client socket
         client_socket.close()
 
 
@@ -149,8 +148,6 @@ if __name__ == '__main__':
     host = 'localhost' 
     port = 4000
 
-    # Start the data receiving thread
     threading.Thread(target=receive_data, args=(host, port)).start()
 
-    # Start the Flask-SocketIO app
     socketio.run(app, port=5000)

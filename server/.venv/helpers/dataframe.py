@@ -58,4 +58,4 @@ def convert_data(data_dict):
     
 
    
-    return df.to_json(orient='records')
+    return df
