@@ -13,6 +13,8 @@ const Options = () => {
   const [arrayOfPuts, setArrayOfPuts] = useState([]);
   const [arrayOfFutures, setArrayOfFutures] = useState([]);
   const [currentArray,setCurrentArray]=useState([]);
+  const [arrayOfIndexes,setArrayOfIndexes]=useState([]);
+  const [currentIndex,setCurrentIndex]=useState([]);
 
   const [selectedSymbol, setSelectedSymbol] = useState("MAINIDX");
 
@@ -67,6 +69,15 @@ const Options = () => {
       
     })
 
+    socket.on('indexes',(indexes)=>{
+      const parsedData = JSON.parse(indexes);
+      parsedData[3]['Underlying']='MIDCAP';
+      console.log('indexes',parsedData)
+    
+      setArrayOfIndexes(parsedData);
+      
+    })
+
     return () => {
       socket.disconnect();
     };
@@ -76,6 +87,7 @@ const Options = () => {
   useEffect(()=>{
     if(selected==0){
       setCurrentArray(arrayOfCalls)
+      
     };
     if(selected==1){
       setCurrentArray(arrayOfPuts)
@@ -87,13 +99,30 @@ const Options = () => {
   },[selected,arrayOfCalls,arrayOfPuts,arrayOfFutures]);
 
   const filteredData = selectedSymbol ? currentArray.filter((row) => row['Underlying'] === selectedSymbol) : currentArray;
+  const filteredIndex = selectedSymbol ? arrayOfIndexes.filter((row) => row['Underlying'] === selectedSymbol) : arrayOfIndexes;
+
 
   
+  const DisplayText=(filteredIndex)=>{
+    
+    return(
+      <div>
+        <br>
+        </br>
+        <br></br>
 
-  const sendToServer = () => {
-    socket.emit('to-server', 'hello');
-  };
+        {filteredIndex[0]!=undefined?
 
+        <p>
+        Underlying Index: {filteredIndex[0]['Underlying']}  {filteredIndex[0]['LTP']}
+        </p>
+        :
+        <p></p>
+        }
+
+      </div>
+    )
+  }
   return (
     <div>
      
@@ -103,6 +132,7 @@ const Options = () => {
 
       <div className="dropdown">
         <label htmlFor="symbol">Select Symbol:</label>
+
         <select id="symbol" value={selectedSymbol} onChange={handleSymbolChange}>
           
           {Array.from(new Set(arrayOfCalls.map((row) => row['Underlying']))).map((symbol, index) => (
@@ -111,12 +141,14 @@ const Options = () => {
             </option>
           ))}
         </select>
+
       </div>
       <br />
-      <br />
+      <br/>
+      {DisplayText(filteredIndex)}
       <Table filteredData={filteredData}/>
     
-      <button onClick={sendToServer}>Send</button>
+      
     </div>
   );
 };

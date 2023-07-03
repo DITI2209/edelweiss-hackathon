@@ -47,6 +47,9 @@ def get_calls(df):
     sorted_df = filtered_df_CE.sort_values('Strike Price')
     return sorted_df
 
+def get_indexes(df):
+    return df.iloc[:4]
+
 
 def get_puts(df):
     filtered_df_PE = df[df['Type'] == 'PE']
@@ -131,7 +134,7 @@ def receive_data(host, port):
                     
                     #final_data=[get_calls(new_data).to_json(orient='records'),get_puts(new_data).to_json(orient='records'),get_futures(new_data).to_json(orient='records')]
                     #new_data.to_csv('data.csv',index=False)
-                   
+                    socketio.emit('indexes',get_indexes(new_data).to_json(orient='records'))
                     socketio.emit('calls', get_calls(new_data).to_json(orient='records'))
                     socketio.emit('puts', get_puts(new_data).to_json(orient='records'))
                     socketio.emit('futures', get_futures(new_data).to_json(orient='records'))
