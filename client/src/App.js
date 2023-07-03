@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Navbar from './components/navbar';
+//import Navbar from './components/navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { authLogin } from './reducers/authReducer';
 import { useEffect } from 'react';
@@ -30,7 +30,7 @@ function App() {
   
   return (
     <div className="App">
-    <Navbar/>
+    
     <Chat/>
     <BrowserRouter>
 

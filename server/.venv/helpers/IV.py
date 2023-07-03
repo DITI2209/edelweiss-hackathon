@@ -8,7 +8,7 @@ import numpy as np
 def IV_list(df):
     
     if(len(df)>2000):
-        return df.to_json(orient='records')
+        return df
     def get_LTP(df):
         MAINIDX_index_LTP = df.iloc[0]['LTP']
         FINANCIALS_index_LTP = df.iloc[1]['LTP']
@@ -96,6 +96,6 @@ def IV_list(df):
     implied_volatility_list = [np.nan, np.nan, np.nan, np.nan] + implied_volatility_list
     #print(implied_volatility_list)
     df["Implied Volatility"] = implied_volatility_list
-    print(df)
-    return df.to_json(orient='records')
+    #print(df)
+    return df
 
