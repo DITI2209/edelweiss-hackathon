@@ -125,13 +125,23 @@ const Options = () => {
   }
   return (
     <div>
-     
-      <button onClick={()=>setSelected(0)}>Calls</button>
+     <div class="navi">
+    <div class="tabs">
+        <input type="radio" id="radio-1" name="tabs" />
+        <label class="tab" for="radio-1" onClick={()=>setSelected(0)} >Calls</label>
+        <input type="radio" id="radio-2" name="tabs" />
+        <label class="tab" for="radio-2" onClick={()=>setSelected(1)}>Puts</label>
+        <input type="radio" id="radio-3" name="tabs" />
+        <label class="tab" for="radio-3" onClick={()=>setSelected(2)}>Futures</label>
+        <span class="glider"></span>
+    </div>
+</div>
+      {/* <button onClick={()=>setSelected(0)}>Calls</button>
       <button onClick={()=>setSelected(1)}>Puts</button>
-      <button onClick={()=>setSelected(2)}>Futures</button>
+      <button onClick={()=>setSelected(2)}>Futures</button> */}
 
       <div className="dropdown">
-        <label htmlFor="symbol">Select Symbol:</label>
+        {/* <label htmlFor="symbol">Select Symbol:</label> */}
 
         <select id="symbol" value={selectedSymbol} onChange={handleSymbolChange}>
           
@@ -141,6 +151,34 @@ const Options = () => {
             </option>
           ))}
         </select>
+        
+
+      </div>
+
+      <div className="dropdown">
+        {/* <label htmlFor="symbol">Select Symbol:</label> */}
+
+        <select id="symbol" value={selectedSymbol} onChange={handleSymbolChange}>
+          
+          {Array.from(new Set(arrayOfCalls.map((row) => row['Underlying']))).map((symbol, index) => (
+            <option key={index} value={symbol}>
+              {symbol}
+            </option>
+          ))}
+        </select>
+      </div>
+      <div className="dropdown">
+        {/* <label htmlFor="symbol">Select Symbol:</label> */}
+
+        <select id="symbol" value={selectedSymbol} onChange={handleSymbolChange}>
+          
+          {Array.from(new Set(arrayOfCalls.map((row) => row['Underlying']))).map((symbol, index) => (
+            <option key={index} value={symbol}>
+              {symbol}
+            </option>
+          ))}
+        </select>
+        
 
       </div>
       <br />
