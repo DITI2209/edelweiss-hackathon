@@ -3,7 +3,7 @@
 This project aims to build an Options Chain Tool that processes real-time market data and calculates various metrics, such as Implied Volatility (IV), to display an options chain screen. The tool will provide a user-friendly web interface where users can select underlying assets, different expiry dates, and filter options based on specific criteria.
 
 ## Link to video and Ppt
-[Link]([https://www.google.com](https://drive.google.com/drive/folders/1eye0Nb1EXfRYmb4X4srEs6XlIWtqMcGt?usp=drive_link))
+[Link]((https://drive.google.com/drive/folders/1eye0Nb1EXfRYmb4X4srEs6XlIWtqMcGt?usp=drive_link))
 
 ## Table of Contents
 
