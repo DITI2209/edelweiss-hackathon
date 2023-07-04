@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import Modal from 'react-modal';
-
+import './chartmodal.css'
 Modal.setAppElement('#root');
 
 function ChartModal({ data }) {
@@ -108,13 +108,19 @@ function ChartModal({ data }) {
   };
 
   return (
-    <div>
-      <button onClick={openModal}>Open Modal</button>
+    <div className='chart'>
+      <div className='button'>
+      <div class="frame">
+        <button onClick={openModal} >View Chart</button>
+      </div>
+      </div>
+
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}
         style={modalStyle}
       >
+        
         <div className="modal-content">
           <h2>Chart Modal</h2>
           <div style={chartStyle}>
@@ -123,6 +129,7 @@ function ChartModal({ data }) {
         
         </div>
       </Modal>
+      
     </div>
   );
 }

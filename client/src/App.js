@@ -1,18 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
-import Home from './pages/Home';
-
-
 import Options from './pages/Options';
 import SplashScreen from './pages/Splash';
-
-
 function App() {
-  
-  
-
-  
-
   
   return (
     <div className="App">
@@ -27,13 +16,7 @@ function App() {
         <Route 
             path="/" 
             element={<SplashScreen />} 
-          />
-          <Route 
-            path="/home" 
-            element={<Home />} 
-          />
-
-         
+          />   
             <Route 
             path="/splash" 
             element={<SplashScreen />} 
@@ -41,11 +24,7 @@ function App() {
             <Route 
             path="/options" 
             element={<Options />} 
-          />
-          
-        
-
-          
+          />  
          
         </Routes>
       </div>

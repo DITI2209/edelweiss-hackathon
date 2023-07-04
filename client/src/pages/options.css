@@ -97,7 +97,7 @@ body {
 }
 
 h1 {
-  font-size:3em; 
+  font-size:1em; 
   font-weight: 300;
   line-height:1em;
   text-align: center;
@@ -108,7 +108,7 @@ p{
   margin-left: 50px;
 }
 h2 {
-  font-size:1em; 
+  font-size:0.7em; 
   font-weight: 300;
   text-align: center;
   display: block;
@@ -132,7 +132,7 @@ h2 a {
 }
 .container th h1 {
       font-weight: bold;
-      font-size: 1em;
+      font-size: 0.8em;
   text-align: center;
   color: #4DC3FA;
 }
@@ -140,7 +140,7 @@ h2 a {
 
 .container td {
       font-weight: light;
-      font-size: 1em;
+      font-size: 0.8em;
       text-align: center;
       color: white;   
   -webkit-box-shadow: 0 2px 2px -2px #0E1119;
@@ -170,7 +170,7 @@ h2 a {
 .dropdown {
    position: auto;
    display: inline-block;
-   padding: 30px;
+   padding: 10px 30px 10px 50px;
  }
  
  .dropdown select {
@@ -234,4 +234,11 @@ h2 a {
 .container td:first-child { color: white; }
 .container tr:hover {
    background-color: #464A52;
+}
+
+.underlyingpara{
+  margin-left:580px;
+}
+.underlying{
+  color: #f8745c;
 }

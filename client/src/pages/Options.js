@@ -170,8 +170,8 @@ const Options = () => {
 
         {filteredIndex[0]!=undefined?
 
-        <p>
-        Underlying Index: {filteredIndex[0]['Underlying']}  {filteredIndex[0]['LTP']}
+        <p className='underlyingpara'>
+        Underlying Index: <span className='underlying'>{filteredIndex[0]['Underlying']}  {filteredIndex[0]['LTP']} </span>
         </p>
         :
         <p></p>

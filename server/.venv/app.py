@@ -52,8 +52,6 @@ def handle_connect():
     emit('first_calls', get_calls(old_data).to_json(orient='records'))
     emit('first_puts', get_puts(old_data).to_json(orient='records'))
     emit('first_futures', get_futures(old_data).to_json(orient='records'))
-    #print(old_data)
-    #emit('first_data',old_data.to_json(orient='records'))
 
 @socketio.on('to-server')
 def handle_to_server(arg):
@@ -138,8 +136,6 @@ def receive_data(host, port):
                     old_data=copy.deepcopy(new_data)
 
                     
-                    #final_data=[get_calls(new_data).to_json(orient='records'),get_puts(new_data).to_json(orient='records'),get_futures(new_data).to_json(orient='records')]
-                    #new_data.to_csv('data.csv',index=False)
                     socketio.emit('indexes',get_indexes(new_data).to_json(orient='records'))
                     socketio.emit('calls', get_calls(new_data).to_json(orient='records'))
                     socketio.emit('puts', get_puts(new_data).to_json(orient='records'))

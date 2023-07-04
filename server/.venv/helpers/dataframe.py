@@ -50,12 +50,5 @@ def convert_data(data_dict):
         df["TTM"] = (df['Expiry Date Time'] - current_datetime).dt.total_seconds() / (60 * 60 * 24*365)
 
     calculate_time_to_maturity(df)
-
-    #df = df.sort_index(axis=1)
-
-    
-    #df.to_csv("Data.csv", index=False)
-    
-
    
     return df

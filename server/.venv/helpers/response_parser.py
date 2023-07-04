@@ -3,7 +3,7 @@ import datetime
 def parse_response(response,last_time,data_dict,flag):
 
     
-    if len(response) < 130:  # Check if the response is complete
+    if len(response) < 130:  
         print("Incomplete packet received")
         return
     
@@ -24,7 +24,7 @@ def parse_response(response,last_time,data_dict,flag):
     prev_close_price = struct.unpack('q', response[114:122])[0]/100
 
 
-    # Check if the response has sufficient length for prev_open_interest
+   
     if len(response) >= 130:
         prev_open_interest = struct.unpack('q', response[122:130])[0]
     else:
@@ -37,7 +37,7 @@ def parse_response(response,last_time,data_dict,flag):
     if(last_time==0):
         last_time=temp
 
-        #append to list
+       
         data_dict["packet_length_list"].append(packet_length)
         data_dict["trading_symbol_list"].append(trading_symbol)
         data_dict["sequence_number_list"].append(sequence_number)
@@ -81,7 +81,7 @@ def parse_response(response,last_time,data_dict,flag):
         else:
             if(trading_symbol=='MAINIDX'):
                 print('Should break here ')
-             #append to list
+    
             data_dict["packet_length_list"].append(packet_length)
             data_dict["trading_symbol_list"].append(trading_symbol)
             data_dict["sequence_number_list"].append(sequence_number)
@@ -96,8 +96,5 @@ def parse_response(response,last_time,data_dict,flag):
             data_dict["open_interest_list"].append(open_interest)
             data_dict["previous_close_price_list"].append(prev_close_price)
             data_dict["prev_open_interest_list"].append(prev_open_interest)
-
-
-  
 
     return data_dict,last_time,flag,data
