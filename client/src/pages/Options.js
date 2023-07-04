@@ -4,6 +4,8 @@ import './options.css';
 import Table from './Table';
 import CSVDownloadButton from './Download';
 import TimerComponent from './Timer';
+import LineChart from '../components/LineChart';
+import ChartModal from './ChartModal';
 
 let socket;
 
@@ -19,16 +21,24 @@ const Options = () => {
 
   const [selectedSymbol, setSelectedSymbol] = useState("MAINIDX");
   const [selectedStrike, setSelectedStrike] = useState("");
+  const [selectedExpiry,setSelectedExpiry]=useState('');
 
   const [selected,setSelected]=useState(0);
 
   const handleSymbolChange = (event) => {
     setSelectedSymbol(event.target.value);
     setSelectedStrike('')
+    setSelectedExpiry('')
   };
 
   const handleStrikeChange = (event) => {
     setSelectedStrike(event.target.value);
+    setSelectedExpiry('');
+  };
+
+  const handleExpiryChange = (event) => {
+    setSelectedExpiry(event.target.value);
+    setSelectedStrike('');
   };
 
   
@@ -138,8 +148,13 @@ const Options = () => {
 
   const filteredDataSymbol = selectedSymbol ? currentArray.filter((row) => row['Underlying'] === selectedSymbol) : currentArray;
   let filteredDataStrike=filteredDataSymbol
+
+
   if (selectedStrike!=''){
     filteredDataStrike = selectedStrike ? filteredDataSymbol.filter((row) => row['Strike Price'] === selectedStrike) : filteredDataSymbol;
+  }
+  else if(selectedExpiry!=''){
+    filteredDataStrike = selectedExpiry ? filteredDataSymbol.filter((row) => new Date(row['Expiry Date']).toLocaleDateString('en-US', {day: '2-digit', month: '2-digit', year: 'numeric'}).split('/').join('-') === selectedExpiry) : filteredDataSymbol;
   }
   const filteredIndex = selectedSymbol ? arrayOfIndexes.filter((row) => row['Underlying'] === selectedSymbol) : arrayOfIndexes;
 
@@ -195,12 +210,15 @@ const Options = () => {
 
       </div>
 
+
+      
       <div className="dropdown">
         {/* <label htmlFor="symbol">Select Symbol:</label> */}
 
-        <select id="symbol" value={selectedSymbol} onChange={handleSymbolChange}>
+        <select id="symbol" value={selectedExpiry} onChange={handleExpiryChange}>
+        <option value={''}>None</option>
           
-          {Array.from(new Set(arrayOfCalls.map((row) => row['Underlying']))).map((symbol, index) => (
+          {Array.from(new Set(arrayOfCalls.map((row) => new Date(row['Expiry Date']).toLocaleDateString('en-US', {day: '2-digit', month: '2-digit', year: 'numeric'}).split('/').join('-')))).map((symbol, index) => (
             <option key={index} value={symbol}>
               {symbol}
             </option>
@@ -209,10 +227,13 @@ const Options = () => {
       </div>
 
 
+
+      {selected!=2?
       <div className="dropdown">
         
 
         <select id="symbol" value={selectedStrike} onChange={handleStrikeChange}>
+          <option value={''}>None</option>
           
           {Array.from(new Set(filteredDataSymbol.map((row) => row['Strike Price']))).map((symbol, index) => (
             <option key={index} value={symbol}>
@@ -221,7 +242,8 @@ const Options = () => {
           ))}
         </select>
 
-      </div>
+      </div>:<></>
+    }
       <br />
       <br/>
 
@@ -231,9 +253,11 @@ const Options = () => {
       <CSVDownloadButton data={filteredDataStrike}/>
 
       {filteredDataSymbol[0]!=undefined?
-      <TimerComponent timestamp={filteredDataSymbol[0]['Timestamp']} timer={4}/>
+      <TimerComponent timestamp={filteredDataSymbol[0]['Timestamp']} timer={5}/>
       :<></>
         }
+      {/* <LineChart data={filteredDataStrike}/> */}
+      <ChartModal data={filteredDataStrike}/>
       <Table filteredData={filteredDataStrike} filteredIndex={filteredIndex} selected={selected}/>
     
       

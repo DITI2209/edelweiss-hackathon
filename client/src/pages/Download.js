@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CSVLink, CSVDownload } from "react-csv";
-
+import './download.css';
 
 
 
@@ -16,7 +16,10 @@ const CSVDownloadButton = ({ data }) => {
    
 
     return(
+      <div className='download'>
     <CSVLink data={data}>Download As CSV</CSVLink>
+    </div>
+
     );
 
     }

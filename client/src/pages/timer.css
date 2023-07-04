@@ -1,0 +1,13 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Gentium+Plus&family=Montserrat:wght@300&family=Roboto:wght@300&display=swap%27');
+@import url('https://fonts.googleapis.com/css2?family=Gentium+Plus&family=Montserrat:wght@200&family=Roboto:wght@300&display=swap%27');
+
+.timer{
+    color: rgb(205, 199, 199);
+    font-size: 10;
+    margin-left: 300px ;
+}
+
+.timevalue{
+    color: #6874f4;
+}

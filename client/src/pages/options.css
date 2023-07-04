@@ -16,8 +16,9 @@
 .tabs {
   display: flex;
   position: relative;
+  justify-content: center;
   background-color: #181414;;
-  box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15);
+  /* box-shadow: 0 0 1px 0 rgba(24, 94, 224, 0.15), 0 6px 12px 0 rgba(24, 94, 224, 0.15); */
   padding: 0.75rem;
 }
 .tabs * {
@@ -57,13 +58,13 @@ input[type="radio"]:checked + label > .notification {
   color: #fff;
 }
 input[id="radio-1"]:checked ~ .glider {
-  transform: translateX(0);
+  transform: translateX(-100%);
 }
 input[id="radio-2"]:checked ~ .glider {
-  transform: translateX(100%);
+  transform: translateX(0%);
 }
 input[id="radio-3"]:checked ~ .glider {
-  transform: translateX(200%);
+  transform: translateX(100%);
 }
 .glider {
   position: absolute;
@@ -131,7 +132,7 @@ h2 a {
 }
 .container th h1 {
       font-weight: bold;
-      font-size: 0.9em;
+      font-size: 1em;
   text-align: center;
   color: #4DC3FA;
 }
@@ -139,7 +140,7 @@ h2 a {
 
 .container td {
       font-weight: light;
-      font-size: 0.9em;
+      font-size: 1em;
       text-align: center;
       color: white;   
   -webkit-box-shadow: 0 2px 2px -2px #0E1119;

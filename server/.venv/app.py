@@ -48,10 +48,10 @@ def hello():
 @socketio.on('connect')
 def handle_connect():
     print('new connection')
-    ''' emit('first_indexes',get_indexes(old_data).to_json(orient='records'))
+    emit('first_indexes',get_indexes(old_data).to_json(orient='records'))
     emit('first_calls', get_calls(old_data).to_json(orient='records'))
     emit('first_puts', get_puts(old_data).to_json(orient='records'))
-    emit('first_futures', get_futures(old_data).to_json(orient='records')) '''
+    emit('first_futures', get_futures(old_data).to_json(orient='records'))
     #print(old_data)
     #emit('first_data',old_data.to_json(orient='records'))
 

@@ -57,7 +57,7 @@ def parse_response(response,last_time,data_dict,flag):
 
         time_diff = last_time - temp
         
-        if((time_diff.total_seconds()>6 or time_diff.total_seconds()<-6) and trading_symbol=='MAINIDX'):
+        if((time_diff.total_seconds()>5 or time_diff.total_seconds()<-5) and trading_symbol=='MAINIDX'):
             print('break')
             flag=True
             last_time=0

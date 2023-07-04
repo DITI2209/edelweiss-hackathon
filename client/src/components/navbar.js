@@ -5,7 +5,7 @@ import { TbBusinessplan } from "react-icons/tb";
 
 import './NavBarDemo.css'
 import { useDispatch, useSelector } from "react-redux";
-import { authLogout } from "../reducers/authReducer";
+
 
 function Navbar() {
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './timer.css'
 
 const TimerComponent = ({ timer, timestamp }) => {
   const [countdown, setCountdown] = useState(timer);
@@ -22,11 +23,11 @@ const TimerComponent = ({ timer, timestamp }) => {
 
   return (
     <div>
-      <div>Timestamp: {timestamp}</div>
+      <div className='timer'><span className='timevalue'>{timestamp}</span></div>
       {countdown > 0 ? (
-        <div>Refreshing in: {countdown}</div>
+        <div className='timer'>Refreshing in: {countdown}</div>
       ) : (
-        <div>Refreshing...</div>
+        <div className='timer'>Refreshing...</div>
       )}
     </div>
   );
