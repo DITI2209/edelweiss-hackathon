@@ -56,8 +56,8 @@ def parse_response(response,last_time,data_dict,flag):
     else:
 
         time_diff = last_time - temp
-       
-        if((time_diff.total_seconds()>6 or time_diff.total_seconds()<-6) and trading_symbol=='MAINIDX'):
+        
+        if((time_diff.total_seconds()>5 or time_diff.total_seconds()<-5) and trading_symbol=='MAINIDX'):
             print('break')
             flag=True
             last_time=0
@@ -79,6 +79,8 @@ def parse_response(response,last_time,data_dict,flag):
             }
            
         else:
+            if(trading_symbol=='MAINIDX'):
+                print('Should break here ')
              #append to list
             data_dict["packet_length_list"].append(packet_length)
             data_dict["trading_symbol_list"].append(trading_symbol)

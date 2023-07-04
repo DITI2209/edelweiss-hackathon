@@ -88,7 +88,7 @@ def IV_list(df):
 
                 except RuntimeError:
                     #print('error')
-                    implied_volatility_list.append(0)
+                    implied_volatility_list.append(np.nan)
 
         else:
             implied_volatility_list.append(np.nan)

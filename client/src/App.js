@@ -14,6 +14,8 @@ import Portfolio from './pages/Portfolio';
 import Form from './pages/Blog';
 import { Chat } from './pages/Chatbot';
 import Options from './pages/Options';
+import SplashScreen from './pages/Splash';
+
 
 function App() {
   const logged_in=useSelector((state)=>state.auth.login);
@@ -45,6 +47,10 @@ function App() {
           <Route 
             path="/investments" 
             element={<Investment />} 
+          />
+            <Route 
+            path="/splash" 
+            element={<SplashScreen />} 
           />
             <Route 
             path="/options" 

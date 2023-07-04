@@ -1,85 +1,89 @@
 import './options.css';
 
-const Table=({filteredData})=>{
+const Table=({filteredData,filteredIndex,selected})=>{
+
+
+    const inMoney=(row)=>{
+        if (selected==0){
+            if(parseFloat(row['Strike Price'])<parseFloat(filteredIndex[0]['LTP'])){
+                return true
+            }
+            else{
+                return false
+            }
+
+        }
+        if(selected==1){
+            if(parseFloat(row['Strike Price'])>parseFloat(filteredIndex[0]['LTP'])){
+                return true
+            }
+            else{
+                return false
+            }
+
+
+        }
+        return false
+    }
+
 
 return(
 <table className="container shadow">
 <thead>
   <tr>
-    <th>
-      <h1>Sr No.</h1>
-    </th>
-    <th>
-      <h1>Type</h1>
-    </th>
-    <th>
-      <h1>Trading Symbol</h1>
-    </th>
-    <th>
-      <h1>Sequence number</h1>
-    </th>
-    <th>
-      <h1>Strike Price</h1>
-    </th>
-    <th>
-      <h1>Expiry</h1>
-    </th>
-    <th>
-      <h1>Time Stamp</h1>
-    </th>
-    <th>
-      <h1>LTP</h1>
-    </th>
-    <th>
-      <h1>LTQ</h1>
-    </th>
-    <th>
-      <h1>Volume</h1>
-    </th>
-    <th>
-      <h1>Bid Price</h1>
-    </th>
-    <th>
-      <h1>Bid Quantity</h1>
-    </th>
-    <th>
-      <h1>Ask Price</h1>
-    </th>
-    <th>
-      <h1>Ask Quantity</h1>
-    </th>
-    <th>
-      <h1>Open Interest</h1>
-    </th>
-    <th>
-      <h1>Prev Close Price</h1>
-    </th>
-    <th>
-      <h1>Prev Open Interest</h1>
-    </th>
+   
+   <th><h1>OI</h1></th>
+      <th><h1>CHNG IN OI</h1></th>
+      <th><h1>Volume</h1></th>
+      <th><h1>IV</h1></th>
+      <th><h1>LTP</h1></th>
+      <th><h1>CHNG</h1></th>
+      <th><h1>BID QTY</h1></th>
+      <th><h1>BID</h1></th>
+      <th><h1>Ask</h1></th>
+      <th><h1>Ask QTY</h1></th>
+      <th><h1>Strike</h1></th>
+      <th><h1>Expiry Date</h1></th>
+   
   </tr>
 </thead>
 <tbody>
   {filteredData.map((row, index) => (
-    <tr key={index}>
-      <td>{index + 1}</td>
-      <td>{row['Type']}</td>
-      <td>{row['Underlying']}</td>
-      <td>{row['Sequence Number']}</td>
-      <td>{row['Strike Price']}</td>
-      <td>{row['Expiry']}</td>
-      <td>{row['Timestamp']}</td>
-      <td>{row['LTP']}</td>
-      <td>{row['LTQ']}</td>
-      <td>{row['Volume']}</td>
-      <td>{row['Bid Price']}</td>
-      <td>{row['Bid Quantity']}</td>
-      <td>{row['Ask Price']}</td>
-      <td>{row['Ask Quantity']}</td>
-      <td>{row['Open Interest']}</td>
-      <td>{row['Previous Close Price']}</td>
-      <td>{row['Previous Open Interest']}</td>
+    <>
+    {inMoney(row)?
+    <tr key={index} style={{backgroundColor:'green'}}>
+        <td>{row['Open Interest']}</td>
+        <td>{row['Change in Open Interest']}</td>
+        <td>{row['Volume']}</td>
+        <td>{row['Implied Volatility']}</td>
+        <td>{row['LTP']}</td>
+        <td>{row['Change']}</td>
+        <td>{row['Bid Quantity']}</td>
+        <td>{row['Bid Price']}</td>
+        <td>{row['Ask Price']}</td>
+        <td>{row['Ask Quantity']}</td>
+        <td>{row['Strike Price']}</td>
+        <td>{row[new Date(row['Expiry Date Time']/1000).toUTCString()]}</td>
     </tr>
+    :
+    <tr key={index}>
+       <td>{row['Open Interest']}</td>
+        <td>{row['Change in Open Interest']}</td>
+        <td>{row['Volume']}</td>
+        <td>{row['Implied Volatility']}</td>
+        <td>{row['LTP']}</td>
+        <td>{row['Change']}</td>
+        <td>{row['Bid Quantity']}</td>
+        <td>{row['Bid Price']}</td>
+        <td>{row['Ask Price']}</td>
+        <td>{row['Ask Quantity']}</td>
+        <td>{row['Strike Price']}</td>
+        <td>{row[new Date(row['Expiry Date Time']).toUTCString()]}</td>
+        
+    </tr>
+    
+    }</>
+
   ))}
 </tbody>
 </table>
