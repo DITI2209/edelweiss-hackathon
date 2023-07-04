@@ -1,5 +1,4 @@
 import './options.css';
-
 const Table=({filteredData})=>{
 
 return(
@@ -52,7 +51,8 @@ return(
         <td>{row['Ask Price']}</td>
         <td>{row['Ask Quantity']}</td>
         <td>{row['Strike Price']}</td>
-        <td>{row['Expiry Date Time']}</td>
+        {/* <td>{new Date(row['Expiry Date']).toLocaleDateString('en-US', {month: 'numeric', day: '2-digit', year: 'numeric'})}</td> */}
+        <td>{new Date(row['Expiry Date']).toLocaleDateString('en-US', {day: '2-digit', month: '2-digit', year: 'numeric'}).split('/').join('-')}</td>
       </tr>
     ))}
   </tbody>

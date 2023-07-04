@@ -67,33 +67,34 @@ def IV_list(df):
         option_price=float(option_price)
         underlying_price=float(underlying_price)
         time_to_maturity=float(time_to_maturity)
-        time_to_maturity=time_to_maturity/365
 
-        ''' print(option_price)
-        print(underlying_price)
-        print(strike_price)
-        print(time_to_maturity)
-        print(risk_free_rate)
-        print(option_type) '''
+        # print(option_price)
+        # print(underlying_price)
+        # print(strike_price)
+        # print(time_to_maturity)
+        # print(risk_free_rate)
+        # print(option_type)
 
-       
-        if option_type != "XX":
-            
-                try:
-                
-                    iv = implied_volatility(option_price, underlying_price, strike_price, time_to_maturity, risk_free_rate,
-                                        option_type)
-               
-                    implied_volatility_list.append(iv)
-
-                except RuntimeError:
-                    #print('error')
-                    implied_volatility_list.append(0)
-
+        if time_to_maturity < 0:
+            implied_volatility_list.append(0)
         else:
-            implied_volatility_list.append(np.nan)
+            if option_type != "XX":
+                
+                    try:
+                    
+                        iv = implied_volatility(option_price, underlying_price, strike_price, time_to_maturity, risk_free_rate,
+                                            option_type)
+                
+                        implied_volatility_list.append(iv)
 
-    implied_volatility_list = [np.nan, np.nan, np.nan, np.nan] + implied_volatility_list
+                    except RuntimeError:
+                        #print('error')
+                        implied_volatility_list.append('-')
+
+            else:
+                implied_volatility_list.append('-')
+
+    implied_volatility_list = ['-', '-', '-', '-'] + implied_volatility_list
     #print(implied_volatility_list)
     df["Implied Volatility"] = implied_volatility_list
     #print(df)

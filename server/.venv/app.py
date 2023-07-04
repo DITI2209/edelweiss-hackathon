@@ -125,9 +125,10 @@ def receive_data(host, port):
                 
                 if(flag):
                     print('in here')
-                   
+
                     new_data=dataframe.convert_data(data_dict)
                     new_data=change.get_change_and_oi(new_data)
+                    new_data.to_csv('xyz.csv')
                     new_data=IV.IV_list(new_data)
                     old_data=copy.deepcopy(new_data)
 
