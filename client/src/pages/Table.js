@@ -51,7 +51,7 @@ return(
   {filteredData.map((row, index) => (
     <>
     {inMoney(row)?
-    <tr key={index} style={{backgroundColor:'green'}}>
+    <tr key={index} style={{backgroundColor:'rgb(68, 64, 64)'}}>
         <td>{row['Open Interest']}</td>
         <td>{row['Change in Open Interest']}</td>
         <td>{row['Volume']}</td>
@@ -63,7 +63,7 @@ return(
         <td>{row['Ask Price']}</td>
         <td>{row['Ask Quantity']}</td>
         <td>{row['Strike Price']}</td>
-        <td>{row[new Date(row['Expiry Date Time']/1000).toUTCString()]}</td>
+        <td>{new Date(row['Expiry Date']).toLocaleDateString('en-US', {day: '2-digit', month: '2-digit', year: 'numeric'}).split('/').join('-')}</td>
     </tr>
     :
     <tr key={index}>
@@ -78,7 +78,7 @@ return(
         <td>{row['Ask Price']}</td>
         <td>{row['Ask Quantity']}</td>
         <td>{row['Strike Price']}</td>
-        <td>{row[new Date(row['Expiry Date Time']).toUTCString()]}</td>
+        <td>{new Date(row['Expiry Date']).toLocaleDateString('en-US', {day: '2-digit', month: '2-digit', year: 'numeric'}).split('/').join('-')}</td>
         
     </tr>
     

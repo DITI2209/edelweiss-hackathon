@@ -4,7 +4,7 @@ import numpy as np
 
 
 def get_change_and_oi(df):
-    print(type(df['LTP'][0]),type(df['Previous Close Price'][0]),type(df['Open Interest'][0]),type(df['Previous Open Interest'][0]))
+    
 
     df["Change"] = df["LTP"] - df["Previous Close Price"]
 

@@ -47,7 +47,7 @@ def convert_data(data_dict):
         df["Expiry Date"] = pd.to_datetime(df['Expiry Date'], format='%d%b%y')
         current_datetime = datetime.datetime.now()
         df['Expiry Date Time'] = pd.to_datetime(df['Expiry Date'].dt.strftime('%Y-%m-%d') + ' 15:30')
-        df["TTM"] = (df['Expiry Date Time'] - current_datetime).dt.total_seconds() / (60 * 60 * 24)
+        df["TTM"] = (df['Expiry Date Time'] - current_datetime).dt.total_seconds() / (60 * 60 * 24*365)
 
     calculate_time_to_maturity(df)
 

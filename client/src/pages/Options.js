@@ -85,6 +85,37 @@ const Options = () => {
       
     })
 
+    socket.on('first_calls', (data) => {
+      const parsedData = JSON.parse(data);
+      console.log('calls',parsedData)
+    
+      setArrayOfCalls(parsedData);
+    });
+
+    socket.on('first_puts',(puts)=>{
+      const parsedData = JSON.parse(puts);
+      //console.log('puts',parsedData)
+      setArrayOfPuts(parsedData);
+      
+    })
+
+    socket.on('first_futures',(futures)=>{
+      const parsedData = JSON.parse(futures);
+      //console.log('futures',parsedData)
+    
+      setArrayOfFutures(parsedData);
+      
+    })
+
+    socket.on('first_indexes',(indexes)=>{
+      const parsedData = JSON.parse(indexes);
+      parsedData[3]['Underlying']='MIDCAP';
+      //console.log('indexes',parsedData)
+    
+      setArrayOfIndexes(parsedData);
+      
+    })
+
     return () => {
       socket.disconnect();
     };

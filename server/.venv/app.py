@@ -16,27 +16,6 @@ socketio = SocketIO(app,cors_allowed_origins='*')
 
 old_data=df
 
-@app.route('/')
-def index():
-    return 'hello world'
-
-@app.route('/hi')
-def hello():
-    data = "hello world"
-    return jsonify({'sign': data})
-
-
-@socketio.on('connect')
-def handle_connect():
-    print('new connection')
-    #print(old_data)
-    #emit('first_data',old_data.to_json(orient='records'))
-
-@socketio.on('to-server')
-def handle_to_server(arg):
-    print(f'new to-server event: {arg}')
-    emit('from-server', str(123))
-
 def get_futures(df):
     filtered_df_xx = df[df['Type'] == 'XX']
     return filtered_df_xx
@@ -55,6 +34,33 @@ def get_puts(df):
     filtered_df_PE = df[df['Type'] == 'PE']
     sorted_df = filtered_df_PE.sort_values('Strike Price', ascending=False)
     return sorted_df
+
+@app.route('/')
+def index():
+    return 'hello world'
+
+@app.route('/hi')
+def hello():
+    data = "hello world"
+    return jsonify({'sign': data})
+
+
+@socketio.on('connect')
+def handle_connect():
+    print('new connection')
+    ''' emit('first_indexes',get_indexes(old_data).to_json(orient='records'))
+    emit('first_calls', get_calls(old_data).to_json(orient='records'))
+    emit('first_puts', get_puts(old_data).to_json(orient='records'))
+    emit('first_futures', get_futures(old_data).to_json(orient='records')) '''
+    #print(old_data)
+    #emit('first_data',old_data.to_json(orient='records'))
+
+@socketio.on('to-server')
+def handle_to_server(arg):
+    print(f'new to-server event: {arg}')
+    emit('from-server', str(123))
+
+
   
 
 def receive_data(host, port):
